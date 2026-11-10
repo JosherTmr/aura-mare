@@ -1,0 +1,61 @@
+/* ==========================================================================
+   AURA MARE · JL Arquitectos — Design tokens v3.0
+   Dirección "Noche arriba": primera pantalla negra con dorado, cuerpo claro.
+   Paleta de la empresa: negro y dorado. Ningún color, fuente, duración o
+   curva se declara fuera de este archivo.
+   ========================================================================== */
+
+/* ---------- Fuentes (self-hosted, SIL OFL) ---------- */
+@font-face { font-family: "Playfair Display"; src: url("../assets/fonts/playfair-display-latin-400-normal.woff2") format("woff2"); font-weight: 400; font-style: normal; font-display: swap; }
+@font-face { font-family: "Playfair Display"; src: url("../assets/fonts/playfair-display-latin-500-normal.woff2") format("woff2"); font-weight: 500; font-style: normal; font-display: swap; }
+@font-face { font-family: "Jost"; src: url("../assets/fonts/jost-latin-300-normal.woff2") format("woff2"); font-weight: 300; font-style: normal; font-display: swap; }
+@font-face { font-family: "Jost"; src: url("../assets/fonts/jost-latin-400-normal.woff2") format("woff2"); font-weight: 400; font-style: normal; font-display: swap; }
+@font-face { font-family: "Jost"; src: url("../assets/fonts/jost-latin-500-normal.woff2") format("woff2"); font-weight: 500; font-style: normal; font-display: swap; }
+
+:root {
+  /* ---------- Paleta ---------- */
+  --negro:         #0B0B0C; /* Header, hero, pie, texto principal (19:1 sobre blanco) */
+  --negro-calido:  #16130E; /* Final del degradado del hero */
+  --negro-hover:   #2A2A2C; /* Hover de botones negros */
+  --dorado:        #C9A46C; /* Línea del horizonte, botón sobre negro, logos. NUNCA texto sobre blanco (2.1:1) */
+  --dorado-claro:  #E2C087; /* Texto dorado sobre negro (11:1), hover del botón dorado */
+  --marfil:        #F6F1E8; /* Texto sobre negro */
+  --marfil-suave:  rgba(246, 241, 232, 0.72); /* Texto secundario sobre negro */
+  --blanco:        #FFFFFF; /* Fondo del cuerpo */
+  --piedra:        #F4F3F1; /* Secciones alternas y campos de formulario */
+  --gris:          #5F5E5A; /* Texto secundario sobre blanco (6.4:1) */
+  --linea:         rgba(11, 11, 12, 0.12);   /* Bordes y divisores sobre claro */
+  --linea-osc:     rgba(255, 255, 255, 0.16); /* Bordes y divisores sobre negro */
+
+  /* ---------- Tipografía ---------- */
+  --sans:  "Jost", "Helvetica Neue", Arial, sans-serif;          /* Título del hero, textos, interfaz */
+  --serif: "Playfair Display", "Times New Roman", serif;         /* Títulos de sección, nombres */
+  --fs-hero:  clamp(3rem, 1.6rem + 4.6vw, 6rem);       /* h1: Jost 300, -0.04em */
+  --fs-h2:    clamp(1.75rem, 1.25rem + 1.4vw, 2.5rem); /* Playfair 400, -0.015em */
+  --fs-h3:    1.375rem;                                /* Playfair 400 */
+  --fs-lead:  1.125rem;                                /* Jost 300 */
+  --fs-body:  1.0625rem;                               /* Jost 400, 17px */
+  --fs-small: 0.9375rem;                               /* Jost 400, 15px */
+
+  /* ---------- Layout ---------- */
+  --container: 1240px;
+  --gutter: max(20px, env(safe-area-inset-left, 0px));
+  --header-h: 80px;
+  --aside-w: 360px;                       /* columna lateral fija (ficha + formulario) */
+  --section-y: clamp(64px, 4vw + 40px, 96px);
+  --arch-w: clamp(240px, 24vw, 320px);
+  --card-w: clamp(220px, 20vw, 280px);
+
+  /* ---------- Formas ---------- */
+  --radius-arch: 999px 999px 0 0 / 60% 60% 0 0;
+  --radius-photo: 4px;
+  --radius-panel: 8px;
+  --radius-pill: 999px;
+
+  /* ---------- Movimiento (Emil Kowalski) ---------- */
+  --ease-out:    cubic-bezier(0.23, 1, 0.32, 1);
+  --ease-in-out: cubic-bezier(0.77, 0, 0.175, 1);
+  --dur-press: 160ms;
+  --dur-hover: 150ms;
+  --dur-ui: 220ms;
+}
