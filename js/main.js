@@ -50,7 +50,7 @@
       });
     });
   }
-  tabs('.mtab'); tabs('.ptab');
+  tabs('.mtab'); tabs('.ptab'); tabs('.atab');
 
   /* 5. Lightbox (galería y planos) */
   const lb = $('#lightbox');

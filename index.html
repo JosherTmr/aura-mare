@@ -54,6 +54,7 @@
     <a class="firm" href="index.html"><img src="assets/img/marca/logo-jl-arquitectos-dorado-400.webp" alt="" width="400" height="296">JL Arquitectos</a>
     <nav class="nav" aria-label="Principal">
       <a href="#inicio">Aura Mare</a>
+      <a href="#apartamentos">Apartamentos</a>
       <a href="#zonas">Zonas comunes</a>
       <a href="#plantas">Planos</a>
       <a href="nosotros.html">Nosotros</a>
@@ -70,6 +71,7 @@
   </div>
   <nav aria-label="Menú">
     <a href="#inicio">Aura Mare</a>
+    <a href="#apartamentos">Apartamentos</a>
     <a href="#zonas">Zonas comunes</a>
     <a href="#plantas">Planos</a>
     <a href="#asesoria">Quiero información</a>
@@ -289,9 +291,49 @@
             <li><svg class="i" aria-hidden="true"><use href="#i-leaf"/></svg>Jardines</li>
             <li><svg class="i" aria-hidden="true"><use href="#i-bell"/></svg>Lobby con 2 recepciones</li>
             <li><svg class="i" aria-hidden="true"><use href="#i-shield"/></svg>2 garitas de vigilancia</li>
-            <li><svg class="i" aria-hidden="true"><use href="#i-car"/></svg>28 parqueaderos</li>
+            <li><svg class="i" aria-hidden="true"><use href="#i-car"/></svg>147 parqueaderos</li>
             <li><svg class="i" aria-hidden="true"><use href="#i-store"/></svg>Plazoleta comercial</li>
           </ul>
+        </section>
+
+        <!-- Apartamentos (patrón “tipologías” de Marval) -->
+        <section class="apartamentos" id="apartamentos" aria-labelledby="ap-t">
+          <h2 class="h2" id="ap-t">Apartamentos</h2>
+          <p class="apto-intro">Dos tipos de apartamento, amoblados para que veas cómo se viven. Toca la imagen para verla en grande.</p>
+          <div class="atabs" role="tablist" aria-label="Tipos de apartamento">
+            <button class="atab" role="tab" id="at-1" aria-controls="ap-1" aria-selected="true">120 m² · 2 habitaciones</button>
+            <button class="atab" role="tab" id="at-2" aria-controls="ap-2" aria-selected="false" tabindex="-1">170 m² · 3 habitaciones</button>
+          </div>
+          <div class="ppanel" role="tabpanel" id="ap-1" aria-labelledby="at-1">
+            <button data-plan="assets/img/apartamentos/apto-120-ambientado-1264.webp" data-cap="Apartamento de 120 m² · planta ambientada" aria-label="Ver el apartamento de 120 m² en grande">
+              <picture>
+                <source type="image/avif" srcset="assets/img/apartamentos/apto-120-ambientado-640.avif 640w, assets/img/apartamentos/apto-120-ambientado-1024.avif 1024w, assets/img/apartamentos/apto-120-ambientado-1264.avif 1264w" sizes="(max-width: 900px) 100vw, 480px">
+                <source type="image/webp" srcset="assets/img/apartamentos/apto-120-ambientado-640.webp 640w, assets/img/apartamentos/apto-120-ambientado-1024.webp 1024w, assets/img/apartamentos/apto-120-ambientado-1264.webp 1264w" sizes="(max-width: 900px) 100vw, 480px">
+                <img src="assets/img/apartamentos/apto-120-ambientado.jpg" alt="Planta ambientada del apartamento de 120 m²: dos habitaciones, cocina con isla, comedor, sala y dos balcones" width="1264" height="842" loading="lazy" decoding="async">
+              </picture>
+            </button>
+            <div>
+              <h3 class="h3">Apartamento de 120 m²</h3>
+              <dl><dt>Área</dt><dd>120 m²</dd><dt>Habitaciones</dt><dd>2</dd><dt>Baños</dt><dd>3</dd><dt>Balcones</dt><dd>2</dd></dl>
+              <ul><li>Balcón club en la sala y balcón en una habitación</li><li>Cocina abierta con isla</li><li>Comedor y sala integrados</li><li>Zona de labores</li><li>Clóset en cada habitación</li></ul>
+              <a class="btn btn-negro" href="#asesoria">Quiero información</a>
+            </div>
+          </div>
+          <div class="ppanel" role="tabpanel" id="ap-2" aria-labelledby="at-2" hidden>
+            <button data-plan="assets/img/apartamentos/apto-170-ambientado-1312.webp" data-cap="Apartamento de 170 m² · planta ambientada" aria-label="Ver el apartamento de 170 m² en grande">
+              <picture>
+                <source type="image/avif" srcset="assets/img/apartamentos/apto-170-ambientado-640.avif 640w, assets/img/apartamentos/apto-170-ambientado-1024.avif 1024w, assets/img/apartamentos/apto-170-ambientado-1312.avif 1312w" sizes="(max-width: 900px) 100vw, 480px">
+                <source type="image/webp" srcset="assets/img/apartamentos/apto-170-ambientado-640.webp 640w, assets/img/apartamentos/apto-170-ambientado-1024.webp 1024w, assets/img/apartamentos/apto-170-ambientado-1312.webp 1312w" sizes="(max-width: 900px) 100vw, 480px">
+                <img src="assets/img/apartamentos/apto-170-ambientado.jpg" alt="Planta ambientada del apartamento de 170 m²: tres habitaciones, dos vestieres, salón comedor, cocina, zona de ropas y balcón club" width="1312" height="1199" loading="lazy" decoding="async">
+              </picture>
+            </button>
+            <div>
+              <h3 class="h3">Apartamento de 170 m²</h3>
+              <dl><dt>Área</dt><dd>170 m²</dd><dt>Habitaciones</dt><dd>3</dd><dt>Baños</dt><dd>3 y baño social</dd><dt>Balcón club</dt><dd>12,45 × 2,40 m</dd></dl>
+              <ul><li>Salón comedor de 4,80 × 5,54 m</li><li>Habitación principal y habitación 2 con vestier y baño</li><li>Cocina de 3,00 × 2,70 m</li><li>Zona de ropas</li></ul>
+              <a class="btn btn-negro" href="#asesoria">Quiero información</a>
+            </div>
+          </div>
         </section>
 
         <!-- Comercio -->
@@ -330,7 +372,7 @@
             <div>
               <h3 class="h3">Primera planta</h3>
               <dl><dt>Lote</dt><dd>2.722,46 m²</dd><dt>Escala</dt><dd>1:75</dd></dl>
-              <ul><li>Lobby con 2 recepciones y 2 salas de espera</li><li>Ascensores y escaleras</li><li>7 locales comerciales</li><li>28 parqueaderos</li><li>Plazoleta, jardines y parque infantil</li></ul>
+              <ul><li>Lobby con 2 recepciones y 2 salas de espera</li><li>Ascensores y escaleras</li><li>7 locales comerciales</li><li>28 parqueaderos en primera planta</li><li>Plazoleta, jardines y parque infantil</li></ul>
               <a class="btn btn-linea" href="assets/img/planos/plano-primera-planta.pdf" download><svg class="i" aria-hidden="true"><use href="#i-download"/></svg>Descargar PDF</a>
             </div>
           </div>
@@ -374,7 +416,8 @@
             <dt>Uso</dt><dd>Mixto</dd>
             <dt>Lote</dt><dd>2.722 m²</dd>
             <dt>Locales</dt><dd>7</dd>
-            <dt>Parqueaderos</dt><dd>28</dd>
+            <dt>Apartamentos</dt><dd>120 y 170 m²</dd>
+            <dt>Parqueaderos</dt><dd>147</dd>
           </dl>
           <form id="form" novalidate>
             <h3 class="h3">Te asesoramos</h3>
@@ -405,6 +448,7 @@
       </div>
       <nav class="foot-nav" aria-label="Pie de página">
         <a href="#inicio">Aura Mare</a>
+        <a href="#apartamentos">Apartamentos</a>
         <a href="#zonas">Zonas comunes</a>
         <a href="#plantas">Planos</a>
         <a href="#asesoria">Quiero información</a>
