@@ -2,7 +2,7 @@
 <html lang="es">
 <head>
 <meta charset="utf-8">
-<meta name="viewport" content="width=device-width, initial-scale=1">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
 <meta name="theme-color" content="#0B0B0C">
 <meta name="robots" content="noindex">
 <title>Presentación | Aura Mare</title>
@@ -16,6 +16,10 @@
 
 <svg width="0" height="0" style="position:absolute" aria-hidden="true">
   <symbol id="i-ig" viewBox="0 0 24 24"><rect x="3" y="3" width="18" height="18" rx="5"/><circle cx="12" cy="12" r="4"/><circle cx="17.5" cy="6.5" r=".6"/></symbol>
+  <symbol id="i-prev" viewBox="0 0 24 24"><path d="m15 5-7 7 7 7"/></symbol>
+  <symbol id="i-next" viewBox="0 0 24 24"><path d="m9 5 7 7-7 7"/></symbol>
+  <symbol id="i-pause" viewBox="0 0 24 24"><path d="M9 5.5v13M15 5.5v13"/></symbol>
+  <symbol id="i-play" viewBox="0 0 24 24"><path d="M8 5.5v13l10.5-6.5z"/></symbol>
   <symbol id="i-pool" viewBox="0 0 24 24"><path d="M2 17c2 0 2-1.5 4-1.5S8 17 10 17s2-1.5 4-1.5 2 1.5 4 1.5 2-1.5 4-1.5M2 21c2 0 2-1.5 4-1.5S8 21 10 21s2-1.5 4-1.5 2 1.5 4 1.5 2-1.5 4-1.5M8 14V5a2 2 0 0 1 4 0M16 14V5a2 2 0 0 0-4 0M8 8.5h8M8 11.5h8"/></symbol>
   <symbol id="i-bar" viewBox="0 0 24 24"><path d="M5 4h14l-7 8zM12 12v8M8 20h8"/></symbol>
   <symbol id="i-sofa" viewBox="0 0 24 24"><path d="M4 11V8a2 2 0 0 1 2-2h12a2 2 0 0 1 2 2v3M2 13a2 2 0 0 1 4 0v2h12v-2a2 2 0 0 1 4 0v5H2zM5 18v2M19 18v2"/></symbol>
@@ -30,6 +34,8 @@
   <symbol id="i-store" viewBox="0 0 24 24"><path d="M4 9h16l-1.5-5h-13zM5 9v11h14V9M9.5 20v-5h5v5"/></symbol>
 </svg>
 
+<!-- El escenario envuelve lienzo, controles y botones: en el modo girado es lo que rota -->
+<div class="escenario" id="escenario">
 <main class="canvas" id="canvas" aria-label="Presentación de Aura Mare">
 
   <!-- 1 · Video de apertura (generado con Gemini a partir de la pieza principal) -->
@@ -79,7 +85,7 @@
   </section>
 
   <!-- 4 · Balcones -->
-  <section class="s s-foto" aria-roledescription="slide" aria-label="4 de 14: Balcones" aria-hidden="true" inert>
+  <section class="s s-foto" data-foto="balcones" aria-roledescription="slide" aria-label="4 de 14: Balcones" aria-hidden="true" inert>
     <div class="foto">
       <picture>
         <source type="image/webp" data-srcset="assets/img/renders/fachada-balcones-1024.webp">
@@ -93,7 +99,7 @@
   </section>
 
   <!-- 5 · Lobby -->
-  <section class="s s-foto" aria-roledescription="slide" aria-label="5 de 14: Lobby" aria-hidden="true" inert>
+  <section class="s s-foto" data-foto="lobby" aria-roledescription="slide" aria-label="5 de 14: Lobby" aria-hidden="true" inert>
     <div class="foto">
       <picture>
         <source type="image/webp" data-srcset="assets/img/renders/lobby-recepcion-1536.webp">
@@ -126,7 +132,7 @@
   </section>
 
   <!-- 7 · Piscina -->
-  <section class="s s-foto" aria-roledescription="slide" aria-label="7 de 14: Piscina" aria-hidden="true" inert>
+  <section class="s s-foto" data-foto="piscina" aria-roledescription="slide" aria-label="7 de 14: Piscina" aria-hidden="true" inert>
     <div class="foto">
       <picture>
         <source type="image/webp" data-srcset="assets/img/renders/piscina-atardecer-1600.webp">
@@ -140,7 +146,7 @@
   </section>
 
   <!-- 8 · Bar en la terraza -->
-  <section class="s s-foto" aria-roledescription="slide" aria-label="8 de 14: Bar en la terraza" aria-hidden="true" inert>
+  <section class="s s-foto" data-foto="bar" aria-roledescription="slide" aria-label="8 de 14: Bar en la terraza" aria-hidden="true" inert>
     <div class="foto">
       <picture>
         <source type="image/webp" data-srcset="assets/img/renders/bar-terraza-mar-1600.webp">
@@ -154,7 +160,7 @@
   </section>
 
   <!-- 9 · Sala de juegos -->
-  <section class="s s-foto" aria-roledescription="slide" aria-label="9 de 14: Sala de juegos" aria-hidden="true" inert>
+  <section class="s s-foto" data-foto="juegos" aria-roledescription="slide" aria-label="9 de 14: Sala de juegos" aria-hidden="true" inert>
     <div class="foto">
       <picture>
         <source type="image/webp" data-srcset="assets/img/renders/terraza-juegos-1600.webp">
@@ -168,7 +174,7 @@
   </section>
 
   <!-- 10 · Salón social -->
-  <section class="s s-foto" aria-roledescription="slide" aria-label="10 de 14: Salón social" aria-hidden="true" inert>
+  <section class="s s-foto" data-foto="salon" aria-roledescription="slide" aria-label="10 de 14: Salón social" aria-hidden="true" inert>
     <div class="foto">
       <picture>
         <source type="image/webp" data-srcset="assets/img/renders/salon-social-1600.webp">
@@ -182,7 +188,7 @@
   </section>
 
   <!-- 11 · Gimnasio -->
-  <section class="s s-foto" aria-roledescription="slide" aria-label="11 de 14: Gimnasio" aria-hidden="true" inert>
+  <section class="s s-foto" data-foto="gimnasio" aria-roledescription="slide" aria-label="11 de 14: Gimnasio" aria-hidden="true" inert>
     <div class="foto">
       <picture>
         <source type="image/webp" data-srcset="assets/img/renders/gimnasio-corredor-1600.webp">
@@ -218,7 +224,7 @@
   </section>
 
   <!-- 13 · Cafetería -->
-  <section class="s s-foto" aria-roledescription="slide" aria-label="13 de 14: Cafetería" aria-hidden="true" inert>
+  <section class="s s-foto" data-foto="cafe" aria-roledescription="slide" aria-label="13 de 14: Cafetería" aria-hidden="true" inert>
     <div class="foto">
       <picture>
         <source type="image/webp" data-srcset="assets/img/renders/cafe-nocturno-1600.webp">
@@ -265,10 +271,27 @@
   </section>
 
   <div class="progreso" aria-hidden="true"><span id="progreso"></span></div>
+
+  <!-- Aviso del modo girado (pantalla completa simulada en un teléfono de pie) -->
+  <div class="aviso-giro" id="aviso-giro" aria-hidden="true">
+    <svg class="i" aria-hidden="true" viewBox="0 0 24 24"><rect x="7" y="2.5" width="10" height="19" rx="2.2"/><path d="M11 18.5h2"/></svg>
+    <span>Gira tu teléfono</span>
+  </div>
 </main>
 
 <a class="fs-btn volver-btn" href="index.html">← Volver al sitio</a>
 <button class="fs-btn" id="fs-btn" type="button">Pantalla completa</button>
+
+<div class="controles" id="controles" role="group" aria-label="Controles de la presentación">
+  <span class="pausa-etiqueta" id="pausa-etiqueta" hidden>En pausa</span>
+  <div class="pastilla">
+    <button class="ctl" id="btn-prev" type="button" aria-label="Slide anterior"><svg class="i" aria-hidden="true"><use href="#i-prev"/></svg></button>
+    <button class="ctl ctl-play" id="btn-play" type="button" aria-label="Pausar presentación" aria-pressed="false"><svg class="i i-pausar" aria-hidden="true"><use href="#i-pause"/></svg><svg class="i i-reanudar" aria-hidden="true"><use href="#i-play"/></svg></button>
+    <button class="ctl" id="btn-next" type="button" aria-label="Slide siguiente"><svg class="i" aria-hidden="true"><use href="#i-next"/></svg></button>
+  </div>
+</div>
+<p class="sugerencia" id="sugerencia" aria-hidden="true">Toca Pantalla completa para verla en horizontal</p>
+</div>
 <p class="sr-only" id="anuncio" aria-live="polite"></p>
 
 </body>

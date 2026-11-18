@@ -14,13 +14,29 @@
   --pres-k: 1;                /* escala del lienzo; la calcula js/presentacion.js */
   --pres-logo-in: 2800ms;     /* aparición lenta del logo al final del video */
   --pres-viaje: 2200ms;       /* viaje del logo del video a su lugar en la portada */
+  --pres-safe-top: 96px;      /* margen superior e inferior; en vertical js/presentacion.js le suma */
+  --pres-safe-bottom: 96px;   /* la zona segura del equipo y el espacio de los controles */
+  --pres-ui-in: 200ms;        /* controles: aparecer */
+  --pres-ui-out: 150ms;       /* controles: ocultarse (solo opacidad) */
+  --pres-press: 120ms;        /* controles: presionar */
+  --pres-aviso-in: 200ms;     /* aviso "Gira tu teléfono" y sugerencia: aparecer */
+  --pres-aviso-out: 150ms;    /* …y desaparecer */
+  --pres-giro-icono: 900ms;   /* el ícono del teléfono gira una vez */
+  /* Zonas seguras del equipo vistas desde el escenario (en .is-girada cambian de lado) */
+  --sa-top: env(safe-area-inset-top,0px);
+  --sa-right: env(safe-area-inset-right,0px);
+  --sa-bottom: env(safe-area-inset-bottom,0px);
+  --sa-left: env(safe-area-inset-left,0px);
 }
 
 /* =============== Escenario =============== */
 *,*::before,*::after{box-sizing:border-box}
-html,body{height:100%;margin:0;overflow:hidden}
+html,body{height:100%;height:100dvh;margin:0;overflow:hidden}
+/* El body recorta: así el lienzo (más ancho que un celular antes de escalarse) no agranda el viewport */
+body{position:fixed;inset:0}
+[hidden]{display:none!important}
 body{background:var(--negro);color:var(--marfil);font:400 34px/1.45 var(--sans);-webkit-font-smoothing:antialiased;user-select:none;-webkit-user-select:none}
-body.sin-cursor,body.sin-cursor *{cursor:none}
+body.ui-oculta,body.ui-oculta *{cursor:none}
 img{display:block;max-width:none}
 h1,h2,p,ul,dl,dd,figure{margin:0}
 ul{list-style:none;padding:0}
@@ -29,7 +45,17 @@ h1,h2{font-weight:400;text-wrap:balance}
 :focus-visible{outline:2px solid var(--dorado);outline-offset:3px}
 svg.i{fill:none;stroke:currentColor;stroke-linecap:round;stroke-linejoin:round;flex-shrink:0}
 
-.canvas{position:absolute;left:50%;top:50%;width:1920px;height:1080px;overflow:hidden;background:var(--negro);transform:translate(-50%,-50%) scale(var(--pres-k));transform-origin:center}
+.canvas{position:absolute;left:50%;top:50%;width:1920px;height:1080px;overflow:hidden;background:var(--negro);transform:translate(-50%,-50%) scale(var(--pres-k));transform-origin:center;touch-action:pan-y pinch-zoom}
+body{touch-action:pan-y pinch-zoom}
+.escenario{position:fixed;inset:0}
+/* Modo girado: pantalla completa en un teléfono de pie sin bloqueo de orientación.
+   El escenario mide el alto del viewport de ancho y el ancho de alto, y rota 90°.
+   Al tener transform, también es el bloque contenedor de los controles (position:fixed). */
+.is-girada .escenario{inset:auto;left:50%;top:50%;width:var(--esc-w,100dvh);height:var(--esc-h,100dvw);transform:translate(-50%,-50%) rotate(90deg)}
+/* rotate(90deg): la izquierda del escenario queda arriba en el teléfono (muesca) y la derecha abajo */
+.is-girada{--sa-top:env(safe-area-inset-right,0px);--sa-right:env(safe-area-inset-bottom,0px);--sa-bottom:env(safe-area-inset-left,0px);--sa-left:env(safe-area-inset-top,0px)}
+/* La persona desliza «a lo ancho» de lo que ve, que en el teléfono es el eje vertical */
+.is-girada body,.is-girada .canvas{touch-action:pan-x pinch-zoom}
 
 /* =============== Slides y fundido cruzado =============== */
 /* El entrante aparece encima mientras el saliente sigue opaco debajo: sin el bajón a
@@ -45,7 +71,7 @@ svg.i{fill:none;stroke:currentColor;stroke-linecap:round;stroke-linejoin:round;f
 .t-dato{font:400 28px/1.4 var(--sans);color:var(--marfil-suave)}
 
 /* Firma JL (portada y cierre) */
-.firma{position:absolute;right:var(--pres-safe);bottom:var(--pres-safe);display:flex;align-items:center;gap:20px;font:400 28px/1 var(--sans);color:var(--marfil)}
+.firma{position:absolute;right:var(--pres-safe);bottom:var(--pres-safe-bottom);display:flex;align-items:center;gap:20px;font:400 28px/1 var(--sans);color:var(--marfil)}
 .firma img{height:64px;width:auto}
 
 /* =============== 1 · Video de apertura =============== */
@@ -76,8 +102,8 @@ svg.i{fill:none;stroke:currentColor;stroke-linecap:round;stroke-linejoin:round;f
 /* =============== Foto a pantalla completa =============== */
 .foto{position:absolute;inset:0;overflow:hidden}
 .foto img{width:100%;height:100%;object-fit:cover;transform-origin:center}
-.foto::after{content:"";position:absolute;left:0;right:0;bottom:0;height:360px;background:linear-gradient(to top,rgba(11,11,12,.7),rgba(11,11,12,0))}
-.foto-pie{position:absolute;left:var(--pres-safe);right:var(--pres-safe);bottom:var(--pres-safe);z-index:1;text-shadow:0 2px 24px rgba(11,11,12,.45)}
+.foto::after{content:"";position:absolute;left:0;right:0;bottom:0;height:33.4%;background:linear-gradient(to top,rgba(11,11,12,.7),rgba(11,11,12,0))}
+.foto-pie{position:absolute;left:var(--pres-safe);right:var(--pres-safe);bottom:var(--pres-safe-bottom);z-index:1;text-shadow:0 2px 24px rgba(11,11,12,.45)}
 .foto-pie .t-dato{margin-top:12px;color:var(--marfil)}
 
 /* Acercamiento lento durante todo el slide; .is-anim lo pone js/presentacion.js */
@@ -122,15 +148,42 @@ svg.i{fill:none;stroke:currentColor;stroke-linecap:round;stroke-linejoin:round;f
 .progreso span{display:block;height:100%;background:var(--dorado);transform:scaleX(0);transform-origin:left}
 .progreso span.is-anim{animation:pres-fill var(--pres-dur) linear both}
 
-/* =============== Botón de pantalla completa (fuera del lienzo) =============== */
-.fs-btn{position:fixed;top:20px;right:20px;z-index:10;height:44px;padding:0 20px;border:0;border-radius:var(--radius-pill);background:rgba(11,11,12,.72);color:var(--marfil);box-shadow:inset 0 0 0 1px var(--linea-osc);font:500 15px/1 var(--sans);cursor:pointer;opacity:1;transition:opacity var(--dur-ui) var(--ease-out),transform var(--dur-press) var(--ease-out),box-shadow var(--dur-hover) ease}
+/* =============== Botones superiores (fuera del lienzo, tamaño de pantalla) =============== */
+.fs-btn{position:fixed;top:calc(20px + var(--sa-top));right:calc(20px + var(--sa-right));z-index:10;height:44px;padding:0 20px;border:0;border-radius:var(--radius-pill);background:rgba(11,11,12,.72);-webkit-backdrop-filter:blur(12px);backdrop-filter:blur(12px);color:var(--marfil);box-shadow:inset 0 0 0 1px var(--linea-osc);font:500 15px/1 var(--sans);cursor:pointer;opacity:1;transition:opacity var(--pres-ui-in) var(--ease-out),transform var(--dur-press) var(--ease-out),box-shadow var(--dur-hover) ease}
 .fs-btn:active{transform:scale(.97)}
 @media (hover:hover) and (pointer:fine){.fs-btn:hover{box-shadow:inset 0 0 0 1px var(--dorado)}}
-body.sin-cursor .fs-btn,body.en-pantalla-completa .fs-btn{opacity:0;pointer-events:none}
-/* Volver al sitio: arriba a la izquierda; visible al mover el mouse, también en pantalla completa */
-.volver-btn{right:auto;left:20px;display:inline-flex;align-items:center;text-decoration:none}
-body.en-pantalla-completa .volver-btn{opacity:1;pointer-events:auto}
-body.sin-cursor .volver-btn{opacity:0;pointer-events:none}
+/* Volver al sitio: arriba a la izquierda */
+.volver-btn{right:auto;left:calc(20px + var(--sa-left));display:inline-flex;align-items:center;text-decoration:none}
+
+/* =============== Controles: pastilla flotante abajo al centro =============== */
+.controles{position:fixed;left:var(--sa-left);right:var(--sa-right);bottom:calc(24px + var(--sa-bottom));z-index:10;width:max-content;margin:0 auto;opacity:1;transform:none;transition:opacity var(--pres-ui-in) var(--ease-out),transform var(--pres-ui-in) var(--ease-out)}
+.pastilla{display:flex;align-items:center;gap:4px;padding:4px;border-radius:var(--radius-pill);background:rgba(11,11,12,.72);-webkit-backdrop-filter:blur(12px);backdrop-filter:blur(12px);box-shadow:inset 0 0 0 1px var(--linea-osc)}
+.ctl{display:grid;place-items:center;width:44px;height:44px;padding:0;border:0;border-radius:50%;background:transparent;color:var(--marfil);cursor:pointer;transition:transform var(--pres-press) var(--ease-out),background-color var(--dur-hover) ease}
+.ctl-play{width:52px;height:52px}
+.ctl svg.i{width:20px;height:20px;stroke-width:1.5}
+.ctl:active{transform:scale(.94)}
+.ctl:focus-visible{outline-offset:2px}
+@media (hover:hover) and (pointer:fine){.ctl:hover{background:rgba(255,255,255,.08)}}
+/* Ícono de reproducir/pausar: cambio instantáneo */
+.ctl-play .i-reanudar,body.en-pausa .ctl-play .i-pausar{display:none}
+body.en-pausa .ctl-play .i-reanudar{display:block}
+/* Etiqueta "En pausa", pegada a la izquierda de la pastilla (la pastilla no se mueve del centro) */
+.pausa-etiqueta{position:absolute;right:calc(100% + 8px);top:50%;transform:translateY(-50%);height:32px;padding:0 12px;border-radius:var(--radius-pill);background:rgba(11,11,12,.72);-webkit-backdrop-filter:blur(12px);backdrop-filter:blur(12px);box-shadow:inset 0 0 0 1px var(--linea-osc);font:500 13px/32px var(--sans);color:var(--dorado-claro);white-space:nowrap}
+
+/* Ocultos sin actividad (js/presentacion.js pone .ui-oculta): al salir, solo opacidad */
+body.ui-oculta .controles{opacity:0;transform:translateY(8px);pointer-events:none;transition:opacity var(--pres-ui-out) ease,transform 0s linear var(--pres-ui-out)}
+body.ui-oculta .fs-btn{opacity:0;pointer-events:none;transition:opacity var(--pres-ui-out) ease}
+
+/* =============== Aviso "Gira tu teléfono" (dentro del lienzo: gira con él) =============== */
+.aviso-giro{position:absolute;left:50%;top:50%;z-index:6;display:flex;flex-direction:column;align-items:center;gap:24px;padding:40px 56px;border-radius:24px;background:rgba(11,11,12,.72);-webkit-backdrop-filter:blur(12px);backdrop-filter:blur(12px);box-shadow:inset 0 0 0 1px var(--linea-osc);color:var(--marfil);font:400 28px/1.3 var(--sans);transform:translate(-50%,-50%);opacity:0;visibility:hidden;pointer-events:none;transition:opacity var(--pres-aviso-out) ease,visibility 0s linear var(--pres-aviso-out)}
+.aviso-giro.is-visible{opacity:1;visibility:visible;transition:opacity var(--pres-aviso-in) var(--ease-out),visibility 0s}
+.aviso-giro svg.i{width:96px;height:96px;stroke-width:1.2;color:var(--dorado)}
+@keyframes pres-gira{from{transform:rotate(0)}to{transform:rotate(-90deg)}}
+.aviso-giro.is-visible svg.i{animation:pres-gira var(--pres-giro-icono) var(--ease-in-out) 300ms both}
+
+/* =============== Sugerencia única en táctil de pie (sobre la pastilla) =============== */
+.sugerencia{position:fixed;left:var(--sa-left);right:var(--sa-right);bottom:calc(24px + 60px + 12px + var(--sa-bottom));z-index:10;width:max-content;max-width:calc(100% - 32px);margin:0 auto;padding:9px 14px;border-radius:var(--radius-pill);background:rgba(11,11,12,.72);-webkit-backdrop-filter:blur(12px);backdrop-filter:blur(12px);box-shadow:inset 0 0 0 1px var(--linea-osc);font:500 13px/1.3 var(--sans);color:var(--marfil);text-align:center;opacity:0;visibility:hidden;pointer-events:none;transition:opacity var(--pres-aviso-out) ease,visibility 0s linear var(--pres-aviso-out)}
+.sugerencia.is-visible{opacity:1;visibility:visible;transition:opacity var(--pres-aviso-in) var(--ease-out),visibility 0s}
 
 /* =============== Movimiento reducido =============== */
 @media (prefers-reduced-motion:reduce){
@@ -138,5 +191,57 @@ body.sin-cursor .volver-btn{opacity:0;pointer-events:none}
   .s-foto.is-anim .foto img,.s-foto.is-anim .foto-pie .t-foto,.s-foto.is-anim .foto-pie .t-dato{animation:none}
   .video-logo,.video-velo{transition:opacity 300ms ease;transform:none}
   .s-portada.desde-video .t-slide,.s-portada.desde-video .firma{animation:none}
-  .fs-btn{transition:none}
+  .fs-btn{transition:opacity var(--pres-ui-in) ease}
+  .fs-btn:active{transform:none}
+  .controles{transform:none;transition:opacity var(--pres-ui-in) ease}
+  body.ui-oculta .controles{transform:none;transition:opacity var(--pres-ui-out) ease}
+  .ctl,.ctl:active{transform:none;transition:background-color var(--dur-hover) ease}
+  .aviso-giro.is-visible svg.i{animation:none}
 }
+
+/* ==========================================================================
+   Vertical (alto > ancho: celulares y tabletas de pie). Lienzo de 1080 × 1920.
+   js/presentacion.js pone .is-vertical en <html> y calcula la escala y los márgenes.
+   ========================================================================== */
+.is-vertical .canvas{width:1080px;height:1920px}
+
+/* 1 · Video: el edificio a la vista; logo arriba al centro con velo de arriba hacia abajo */
+.is-vertical .video-apertura{object-position:65% center}
+.is-vertical .video-velo{background:linear-gradient(180deg,rgba(11,11,12,.62) 0%,rgba(11,11,12,.34) 22%,rgba(11,11,12,0) 44%)}
+.is-vertical .video-logo{left:0;right:0;margin:0 auto;top:max(220px,var(--pres-safe-top))}
+
+/* 2 · Portada: logo y título al centro, firma abajo al centro */
+.is-vertical .portada-centro{inset:var(--pres-safe-top) var(--pres-safe) var(--pres-safe-bottom)}
+.is-vertical .firma{left:var(--pres-safe);right:var(--pres-safe);justify-content:center}
+
+/* 3 · El proyecto: arco arriba al centro, horizonte bajo el arco, texto debajo */
+.is-vertical .s-proyecto{--arco-top:calc(var(--pres-safe-top) + 72px)}
+.is-vertical .arco{left:260px;top:var(--arco-top)}
+.is-vertical .horizonte{top:calc(var(--arco-top) + 720px)}
+.is-vertical .arco-pie{left:var(--pres-safe);right:var(--pres-safe);top:calc(var(--arco-top) + 740px);text-align:center}
+.is-vertical .proyecto-texto{left:var(--pres-safe);top:calc(var(--arco-top) + 840px);bottom:var(--pres-safe-bottom);justify-content:center}
+
+/* Fotos a pantalla completa: encuadre por foto para que lo importante quede al centro */
+.is-vertical [data-foto="balcones"] .foto img{object-position:60% center}
+.is-vertical [data-foto="lobby"] .foto img{object-position:62% center}
+.is-vertical [data-foto="piscina"] .foto img{object-position:42% center}
+.is-vertical [data-foto="bar"] .foto img{object-position:50% center}
+.is-vertical [data-foto="juegos"] .foto img{object-position:64% center}
+.is-vertical [data-foto="salon"] .foto img{object-position:50% center}
+.is-vertical [data-foto="gimnasio"] .foto img{object-position:40% center}
+.is-vertical [data-foto="cafe"] .foto img{object-position:62% center}
+
+/* 6 · Zonas comunes: título arriba y cuadrícula de 2 × 6 */
+.is-vertical .s-zonas{display:flex;flex-direction:column;padding:var(--pres-safe-top) var(--pres-safe) var(--pres-safe-bottom)}
+.is-vertical .zonas{flex:1;height:auto;grid-template-columns:repeat(2,1fr);grid-template-rows:repeat(6,1fr)}
+
+/* 12 · La ciudad: foto arriba (45 % del alto), título y locales debajo */
+.is-vertical .ciudad-foto{right:0;bottom:auto;width:auto;height:45%}
+.is-vertical .ciudad-texto{left:var(--pres-safe);top:calc(45% + 56px);bottom:var(--pres-safe-bottom);gap:40px}
+
+/* 14 · Cierre: una columna; firma abajo al centro */
+.is-vertical .s-cierre{display:flex;flex-direction:column;justify-content:center;gap:64px;padding:var(--pres-safe-top) var(--pres-safe) calc(var(--pres-safe-bottom) + 112px)}
+.is-vertical .cierre-ficha,.is-vertical .cierre-contacto{position:static;width:auto;gap:48px}
+.is-vertical .cierre-logo img{margin:0 auto}
+.is-vertical .cierre-contacto{align-items:center;gap:32px;text-align:center}
+.is-vertical .qr img{width:300px;height:300px}
