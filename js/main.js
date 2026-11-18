@@ -98,6 +98,14 @@
   }
   addEventListener('keydown', e => { if (e.key === 'Escape') closeDrawer(); });
 
+  /* 9. Tecla P: abre el modo presentación, salvo que se esté escribiendo en un campo */
+  addEventListener('keydown', e => {
+    if ((e.key !== 'p' && e.key !== 'P') || e.ctrlKey || e.metaKey || e.altKey || e.repeat) return;
+    const el = e.target;
+    if (el.closest && el.closest('input, textarea, select, [contenteditable]:not([contenteditable="false"])')) return;
+    location.href = 'presentacion.html';
+  });
+
   /* 4. Galería: scroll-snap nativo + contador + miniaturas */
   const track = $('#track');
   if (track) {

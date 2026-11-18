@@ -1,0 +1,142 @@
+/* ==========================================================================
+   AURA MARE · JL Arquitectos — Modo videobeam (presentacion.html)
+   Lienzo fijo de 1920 × 1080 escalado con transform. Todo en px del lienzo.
+   Colores, fuentes y curvas vienen de tokens.css. Las duraciones propias de
+   la presentación se declaran aquí porque tokens.css no se modifica.
+   ========================================================================== */
+
+:root {
+  --pres-safe: 96px;          /* margen de seguridad: los proyectores recortan bordes */
+  --pres-fade: 1400ms;        /* fundido entre slides */
+  --pres-curva: cubic-bezier(.37,0,.63,1); /* entrada y salida suaves, sin tirón en el medio */
+  --pres-rise: 700ms;         /* entrada de título y pie de foto */
+  --pres-dur: 8000ms;         /* duración del slide; js/presentacion.js la ajusta con ?t= */
+  --pres-k: 1;                /* escala del lienzo; la calcula js/presentacion.js */
+  --pres-logo-in: 2800ms;     /* aparición lenta del logo al final del video */
+  --pres-viaje: 2200ms;       /* viaje del logo del video a su lugar en la portada */
+}
+
+/* =============== Escenario =============== */
+*,*::before,*::after{box-sizing:border-box}
+html,body{height:100%;margin:0;overflow:hidden}
+body{background:var(--negro);color:var(--marfil);font:400 34px/1.45 var(--sans);-webkit-font-smoothing:antialiased;user-select:none;-webkit-user-select:none}
+body.sin-cursor,body.sin-cursor *{cursor:none}
+img{display:block;max-width:none}
+h1,h2,p,ul,dl,dd,figure{margin:0}
+ul{list-style:none;padding:0}
+h1,h2{font-weight:400;text-wrap:balance}
+.sr-only{position:absolute;width:1px;height:1px;overflow:hidden;clip:rect(0 0 0 0);white-space:nowrap}
+:focus-visible{outline:2px solid var(--dorado);outline-offset:3px}
+svg.i{fill:none;stroke:currentColor;stroke-linecap:round;stroke-linejoin:round;flex-shrink:0}
+
+.canvas{position:absolute;left:50%;top:50%;width:1920px;height:1080px;overflow:hidden;background:var(--negro);transform:translate(-50%,-50%) scale(var(--pres-k));transform-origin:center}
+
+/* =============== Slides y fundido cruzado =============== */
+/* El entrante aparece encima mientras el saliente sigue opaco debajo: sin el bajón a
+   negro que deja un fundido cruzado de dos capas semitransparentes */
+.s{position:absolute;inset:0;opacity:0;z-index:0;background:var(--negro);transition:opacity var(--pres-fade) var(--pres-curva)}
+.s.is-active{opacity:1;z-index:2}
+.s.is-leaving{opacity:1;z-index:1;transition:none}
+
+/* =============== Tipografía (px del lienzo) =============== */
+.t-slide{font:300 96px/1.04 var(--sans);letter-spacing:-.03em;color:var(--dorado-claro)}
+.t-foto{font:400 72px/1.12 var(--serif);letter-spacing:-.01em;color:var(--marfil)}
+.t-texto{font:400 34px/1.5 var(--sans);color:var(--marfil-suave)}
+.t-dato{font:400 28px/1.4 var(--sans);color:var(--marfil-suave)}
+
+/* Firma JL (portada y cierre) */
+.firma{position:absolute;right:var(--pres-safe);bottom:var(--pres-safe);display:flex;align-items:center;gap:20px;font:400 28px/1 var(--sans);color:var(--marfil)}
+.firma img{height:64px;width:auto}
+
+/* =============== 1 · Video de apertura =============== */
+.video-apertura{position:absolute;inset:0;width:100%;height:100%;object-fit:cover;background:var(--negro)}
+/* Al final del video el logo aparece sobre el cielo; un velo suave a la izquierda le da contraste */
+.video-velo{position:absolute;inset:0;background:linear-gradient(90deg,rgba(11,11,12,.6) 0%,rgba(11,11,12,.32) 32%,rgba(11,11,12,0) 58%);opacity:0;transition:opacity var(--pres-logo-in) ease}
+.video-logo{position:absolute;left:140px;top:200px;height:360px;width:auto;opacity:0;transform:translateY(16px);transition:opacity var(--pres-logo-in) var(--ease-out),transform var(--pres-logo-in) var(--ease-out)}
+.s-video.logo-in .video-velo{opacity:1}
+.s-video.logo-in .video-logo{opacity:1;transform:none}
+
+/* =============== 2 · Portada =============== */
+.portada-centro{position:absolute;inset:var(--pres-safe);display:flex;flex-direction:column;align-items:center;justify-content:center;gap:56px;text-align:center}
+.portada-logo{height:420px;width:auto;transform-origin:0 0}
+/* Llegada desde el video: el logo viaja de la esquina al centro (js/presentacion.js)
+   y el título y la firma entran cuando el logo ya se asentó */
+@keyframes pres-aparece{from{opacity:0}to{opacity:1}}
+.s-portada.desde-video .t-slide{animation:pres-rise var(--pres-rise) var(--ease-out) calc(var(--pres-fade) + var(--pres-viaje) - 200ms) both}
+.s-portada.desde-video .firma{animation:pres-aparece var(--pres-rise) ease calc(var(--pres-fade) + var(--pres-viaje)) both}
+
+/* =============== 2 · El proyecto =============== */
+.horizonte{position:absolute;left:0;right:0;top:920px;height:2px;background:var(--dorado)}
+.arco{position:absolute;left:160px;top:200px;width:560px;height:720px;border-radius:var(--radius-arch);overflow:hidden}
+.arco img{width:100%;height:100%;object-fit:cover}
+.arco-pie{position:absolute;left:160px;top:940px;font:400 28px/1.4 var(--sans);color:var(--marfil-suave)}
+.proyecto-texto{position:absolute;left:848px;right:var(--pres-safe);top:var(--pres-safe);bottom:232px;display:flex;flex-direction:column;justify-content:flex-end;gap:40px}
+.proyecto-texto .t-texto{max-width:30em}
+
+/* =============== Foto a pantalla completa =============== */
+.foto{position:absolute;inset:0;overflow:hidden}
+.foto img{width:100%;height:100%;object-fit:cover;transform-origin:center}
+.foto::after{content:"";position:absolute;left:0;right:0;bottom:0;height:360px;background:linear-gradient(to top,rgba(11,11,12,.7),rgba(11,11,12,0))}
+.foto-pie{position:absolute;left:var(--pres-safe);right:var(--pres-safe);bottom:var(--pres-safe);z-index:1;text-shadow:0 2px 24px rgba(11,11,12,.45)}
+.foto-pie .t-dato{margin-top:12px;color:var(--marfil)}
+
+/* Acercamiento lento durante todo el slide; .is-anim lo pone js/presentacion.js */
+@keyframes pres-zoom{from{transform:scale(1)}to{transform:scale(1.04)}}
+@keyframes pres-rise{from{opacity:0;transform:translateY(16px)}to{opacity:1;transform:none}}
+.s-foto.is-anim .foto img{animation:pres-zoom var(--pres-dur) linear both}
+.s-foto.is-anim .foto-pie .t-foto{animation:pres-rise 900ms var(--ease-out) 600ms both}
+.s-foto.is-anim .foto-pie .t-dato{animation:pres-rise 900ms var(--ease-out) 760ms both}
+.canvas.is-paused .s-foto.is-anim .foto img{animation-play-state:paused}
+
+/* =============== 5 · Zonas comunes =============== */
+.s-zonas{padding:var(--pres-safe)}
+.zonas{display:grid;grid-template-columns:repeat(4,1fr);grid-template-rows:repeat(3,1fr);height:672px;margin-top:56px;border-top:1px solid var(--linea-osc);border-left:1px solid var(--linea-osc)}
+.zonas li{display:flex;flex-direction:column;justify-content:center;gap:20px;padding:0 36px;border-right:1px solid var(--linea-osc);border-bottom:1px solid var(--linea-osc);font:400 30px/1.25 var(--sans);color:var(--marfil)}
+.zonas svg.i{width:64px;height:64px;stroke-width:1.3;color:var(--dorado)}
+
+/* =============== 11 · La ciudad, a un paso =============== */
+.ciudad-foto{position:absolute;left:0;top:0;bottom:0;width:816px;overflow:hidden}
+.ciudad-foto img{width:100%;height:100%;object-fit:cover}
+.ciudad-texto{position:absolute;left:912px;right:var(--pres-safe);top:var(--pres-safe);bottom:var(--pres-safe);display:flex;flex-direction:column;justify-content:center;gap:48px}
+.locales li{display:flex;justify-content:space-between;gap:32px;padding:14px 0;border-bottom:1px solid var(--linea-osc);font:400 34px/1.3 var(--sans);color:var(--marfil)}
+.locales li:first-child{border-top:1px solid var(--linea-osc)}
+.locales li span:last-child{color:var(--marfil-suave);font-variant-numeric:tabular-nums}
+
+/* =============== 13 · Cierre =============== */
+.cierre-ficha{position:absolute;left:var(--pres-safe);top:var(--pres-safe);bottom:var(--pres-safe);width:880px;display:flex;flex-direction:column;justify-content:center;gap:64px}
+.cierre-logo img{width:640px;height:74px}
+.ficha{display:grid;grid-template-columns:1fr auto;font:400 34px/1.3 var(--sans)}
+.ficha dt,.ficha dd{padding:14px 0;border-top:1px solid var(--linea-osc)}
+.ficha dt:last-of-type,.ficha dd:last-of-type{border-bottom:1px solid var(--linea-osc)}
+.ficha dt{color:var(--marfil-suave)}
+.ficha dd{text-align:right;color:var(--marfil);font-variant-numeric:tabular-nums}
+.cierre-contacto{position:absolute;left:1264px;right:var(--pres-safe);top:var(--pres-safe);bottom:200px;display:flex;flex-direction:column;justify-content:center;gap:48px}
+.qr img{width:260px;height:260px}
+.qr figcaption{margin-top:16px;font:400 28px/1.4 var(--sans);color:var(--marfil-suave)}
+.cierre-contacto .ig{display:flex;align-items:center;gap:14px;font:400 34px/1.3 var(--sans);color:var(--dorado-claro)}
+.cierre-contacto .ig svg.i{width:36px;height:36px;stroke-width:1.5}
+
+/* =============== Progreso: la línea del horizonte =============== */
+@keyframes pres-fill{from{transform:scaleX(0)}to{transform:scaleX(1)}}
+.progreso{position:absolute;left:0;right:0;bottom:0;height:2px;z-index:5;pointer-events:none}
+.progreso span{display:block;height:100%;background:var(--dorado);transform:scaleX(0);transform-origin:left}
+.progreso span.is-anim{animation:pres-fill var(--pres-dur) linear both}
+
+/* =============== Botón de pantalla completa (fuera del lienzo) =============== */
+.fs-btn{position:fixed;top:20px;right:20px;z-index:10;height:44px;padding:0 20px;border:0;border-radius:var(--radius-pill);background:rgba(11,11,12,.72);color:var(--marfil);box-shadow:inset 0 0 0 1px var(--linea-osc);font:500 15px/1 var(--sans);cursor:pointer;opacity:1;transition:opacity var(--dur-ui) var(--ease-out),transform var(--dur-press) var(--ease-out),box-shadow var(--dur-hover) ease}
+.fs-btn:active{transform:scale(.97)}
+@media (hover:hover) and (pointer:fine){.fs-btn:hover{box-shadow:inset 0 0 0 1px var(--dorado)}}
+body.sin-cursor .fs-btn,body.en-pantalla-completa .fs-btn{opacity:0;pointer-events:none}
+/* Volver al sitio: arriba a la izquierda; visible al mover el mouse, también en pantalla completa */
+.volver-btn{right:auto;left:20px;display:inline-flex;align-items:center;text-decoration:none}
+body.en-pantalla-completa .volver-btn{opacity:1;pointer-events:auto}
+body.sin-cursor .volver-btn{opacity:0;pointer-events:none}
+
+/* =============== Movimiento reducido =============== */
+@media (prefers-reduced-motion:reduce){
+  :root{--pres-fade:300ms}
+  .s-foto.is-anim .foto img,.s-foto.is-anim .foto-pie .t-foto,.s-foto.is-anim .foto-pie .t-dato{animation:none}
+  .video-logo,.video-velo{transition:opacity 300ms ease;transform:none}
+  .s-portada.desde-video .t-slide,.s-portada.desde-video .firma{animation:none}
+  .fs-btn{transition:none}
+}
